@@ -1,8 +1,99 @@
+body {
+    background-image: url(Are-you-ready-for-the-Oriel-numeracy-assessment.jpeg);
+    background-size: 100vw 100vh;
+}
+
+.card {
+    cursor: default;
+    margin-right: 20px;
+    transition: 1s;
+}
+
 .game-card {
     height: 100vh;
     font-family: 'Open Sans', monospace;
 }
 
+.card-header {
+    background-color: rgba(122, 192, 238, 0.733);
+}
+
+.card-footer {
+    background-color: rgba(122, 192, 238, 0.733);
+}
+
 .card-body {
     color: indigo;
+}
+
+.form-group {
+    margin-inline: auto;
+    padding: 5px;
+    width: auto;
+}
+
+label {
+    padding: 0px 10px 0px 0px;
+}
+
+#btnRetry {
+    text-decoration: none;
+    color: rgb(37, 2, 194);
+}
+
+#btnRetry:hover {
+    color: rgb(255, 18, 1);
+    font-weight: bold;
+}
+
+#btnEqual {
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: rgb(210, 105, 30);
+    border:none;
+    border-radius:10px;
+}
+
+#btnLess {
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: rgb(75, 31, 235);
+    border:none;
+    border-radius:10px;
+}
+
+#btnOver {
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: rgb(75, 31, 235);
+    border:none;
+    border-radius:10px;
+}
+
+#btnStart {
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: rgb(89, 235, 31);
+    border:none;
+    border-radius:10px;
+}
+
+#btnProceed {
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: rgb(55, 235, 31);
+    border:none;
+    border-radius:10px;
+}
+
+#btnPlay {
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: rgb(30, 182, 228);
+    border:none;
+    border-radius:10px;
+}
+
+.hidden {
+    display: none;
 }

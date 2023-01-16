@@ -1,86 +1,200 @@
-let minValue = parseInt(prompt('Минимальное знание числа для игры','0'));
-let maxValue = parseInt(prompt('Максимальное знание числа для игры','999'));
-alert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
-let answerNumber  = Math.floor((minValue + maxValue) / 2);
-let orderNumber = 1;
-let gameRun = true;
-
-const orderNumberField = document.querySelector('#orderNumberField');
-const answerField = document.querySelector('#answerField');
-
-orderNumberField.innerText = orderNumber;
-answerField.innerText = `Вы загадали число ${answerNumber }?`;
-
-document.querySelector('#btnRetry').addEventListener('click', function () {
-    if (gameRun){
-        answerField.innerText = null;
-        minValue = parseInt(prompt('Минимальное знание числа для игры','0'));
-        maxValue = parseInt(prompt('Максимальное знание числа для игры','999'));
-        alert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
-        answerNumber  = Math.floor((minValue + maxValue) / 2);
-        answerField.innerText = `Вы загадали число ${answerNumber }?`;        
-    }
+ document.getElementById('btnStart').addEventListener('click', function () {
+    document.querySelector('.title-page').classList.add('hidden'); 
+    document.querySelector('.value-range').classList.remove('hidden'); 
+    document.querySelector('.valueRange').classList.remove('hidden'); 
+    document.querySelector('.form-inline').classList.remove('hidden');
+    document.querySelector('#btnStart').classList.add('hidden'); 
+    document.querySelector('#btnProceed').classList.remove('hidden'); 
 })
 
-document.querySelector('#btnOver').addEventListener('click', function () {
-    if (gameRun){
-        if (minValue === maxValue){
-            const phraseRandom = Math.round( Math.random());
-            const answerPhrase = (phraseRandom === 1) ?
-            `Вы загадали неправильное число!\n\u{1F914}` :
-                `Я сдаюсь..\n\u{1F92F}`;
+document.getElementById('btnProceed').addEventListener('click', function () { 
+    document.querySelector('.value-range').classList.add('hidden');
+    document.querySelector('.terms').classList.remove('hidden'); 
+    document.querySelector('.valueRange').classList.add('hidden'); 
+    document.querySelector('.form-inline').classList.add('hidden');
+    document.querySelector('.guessNumber').classList.remove('hidden');
+    document.querySelector('#btnProceed').classList.add('hidden'); 
+    document.querySelector('#btnPlay').classList.remove('hidden'); 
+    minValue = parseInt(document.querySelector('#formInputMin').value);
+    maxValue = parseInt(document.querySelector('#formInputMax').value);
+    minValue = (minValue < -999) ? minValue = -999 : (minValue > 999) ? minValue = 999 : minValue;
+    maxValue = (maxValue > 999) ? maxValue = 999 : (maxValue < -999) ? maxValue = -999 : maxValue;
+    if (maxValue < minValue) {
+        [maxValue, minValue] = [minValue, maxValue];
+    }
+    if (Number.isNaN(maxValue) || Number.isNaN(minValue)) {
+        minValue = 0;
+        maxValue = 100;
+    }
+    guessNumber.innerText = `Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`;
+})
 
-            answerField.innerText = answerPhrase;
-            
-        } else {
-            minValue = answerNumber  + 1;
-            answerNumber  = Math.floor((minValue + maxValue) / 2);
-            orderNumber++;
-            const phraseRandom = Math.round( Math.random()*3);
-            const answerPhrase = (phraseRandom === 1) ?
-            `Это число ${numberAsText(answerNumber) } ?`:
-                `Легко! Это ${numberAsText(answerNumber) } ?`;
-                `Или ${numberAsText(answerNumber) } ?`;
+document.getElementById('btnPlay').addEventListener('click', function () { 
+    document.querySelector('.terms').classList.add('hidden'); 
+    document.querySelector('.question').classList.remove('hidden');
+    document.querySelector('.guessNumber').classList.add('hidden');
+    document.querySelector('.no-gutters').classList.remove('hidden'); 
+    document.querySelector('#btnPlay').classList.add('hidden'); 
+    document.querySelector('#btnLess').classList.remove('hidden');
+    document.querySelector('#btnEqual').classList.remove('hidden');
+    document.querySelector('#btnOver').classList.remove('hidden');
+    document.querySelector('.btn-link').classList.remove('hidden');
 
+    let answerNumber = Math.floor((minValue + maxValue) / 2); 
+    let orderNumber = 1; 
+    let gameRun = true;
+
+    const orderNumberField = document.getElementById('orderNumberField');
+    const answerField = document.getElementById('answerField');
+
+    orderNumberField.innerText = orderNumber;
+    answerField.innerText = `Вы загадали число ${answerNumber }?`;
+    
+    document.getElementById('btnLess').addEventListener('click', function () { 
+        if (gameRun) {
+            if (minValue === maxValue || minValue == answerNumber) {
+                const phraseRandom = Math.round(Math.random() * 3);
+                switch (phraseRandom) {
+                    case 0:
+                        answerPhrase = `Вы загадали неправильное число!\n\u{1F914}`
+                        break;
+
+                    case 1:
+                        answerPhrase = `Я сдаюсь..\n\u{1F92F}`
+                        break;
+
+                    case 2:
+                        answerPhrase = `Упс! Неправильное число. \n\u{1F9D0}`
+                        break;
+
+                }
                 answerField.innerText = answerPhrase;
+                gameRun = false;
+            } else {
+                maxValue = answerNumber - 1; 
+                answerNumber  = Math.floor((maxValue - minValue) / 2);
+                orderNumber++;
+                orderNumberField.innerText = orderNumber;
+                const phraseRandom = Math.round(Math.random() * 3); 
+                switch (phraseRandom) {
+                    case 1:
+                        answerPhrase = `Это просто. Число ${numberAsText(answerNumber) } ?`
+                        break;
+
+                    case 2:
+                        answerPhrase = `Да это же ${numberAsText(answerNumber) } !`
+                        break;
+
+                    case 3:
+                        answerPhrase = `А может ${numberAsText(answerNumber) } ?`
+                        break;
+
+                }
+                answerField.innerText = answerPhrase;
+            }
         }
-    }
-})
+    })
 
-document.querySelector('#btnLess').addEventListener('click', function () {
-    if (gameRun){
-        if (maxValue === minValue){
-            const phraseRandom = Math.round( Math.random());
-            const answerPhrase = (phraseRandom === 1) ?
-            `Вы загадали неправильное число!\n\u{1F914}` :
-                `Я сдаюсь..\n\u{1F92F}`;
-            
-            answerField.innerText = answerPhrase;
-            
-        } else {
-            maxValue = answerNumber  - 1;
-            answerNumber  = Math.floor((maxValue - minValue) / 2);
-            orderNumber++;
-            const phraseRandom = Math.round( Math.random()*3);
-            const answerPhrase = (phraseRandom === 1) ?
-            `Это просто. Число ${numberAsText(answerNumber) } ?`:
-                `Да это же ${numberAsText(answerNumber) } .`;
-                `А может ${numberAsText(answerNumber) } ?`;
+    document.getElementById('btnOver').addEventListener('click', function () { 
+        if (gameRun) {
+            if (minValue === maxValue) {
+                const phraseRandom = Math.round(Math.random() * 3);
+                switch (phraseRandom) {
+                    case 0:
+                        answerPhrase = `Вы загадали неправильное число!\n\u{1F914}`
+                        break;
 
+                    case 1:
+                        answerPhrase = `Я сдаюсь..\n\u{1F92F}`
+                        break;
+
+                    case 2:
+                        answerPhrase = `Упс! Неправильное число. \n\u{1F9D0}`
+                        break;
+                }
                 answerField.innerText = answerPhrase;
+                gameRun = false;
+            } else {
+                minValue = answerNumber + 1; 
+                answerNumber = Math.floor((minValue + maxValue) / 2);
+                orderNumber++;
+                orderNumberField.innerText = orderNumber;
+                const phraseRandom = Math.round(Math.random() * 3);
+                switch (phraseRandom) {
+                    case 0:
+                        answerPhrase = `Это число ${numberAsText(answerNumber) } ?`
+                        break;
+
+                    case 1:
+                        answerPhrase = `Легко! Это ${numberAsText(answerNumber) } ?`;
+                        break;
+
+                    case 2:
+                        answerPhrase =  `Или ${numberAsText(answerNumber) } ?`
+                        break;
+
+                }
+                answerField.innerText = answerPhrase;
+            }
         }
-    }
-})
-document.querySelector('#btnEqual').addEventListener('click', function () {
-    if (gameRun){
-        const phraseRandom = Math.round( Math.random()*3);
-            const answerPhrase = (phraseRandom === 1) ?
-            `Я всегда правильно угадываю\n\u{1F60E}`:
-                `Это было просто. Давай еще раз?\n\u{1F609}`;
-                `Я молодец \n\u{1F60A}`;
+    })
 
-                answerField.innerText = answerPhrase;
+    document.getElementById('btnEqual').addEventListener('click', function () { 
+        if (gameRun) {
+            const phraseRandom = Math.round(Math.random() * 3);
+            switch (phraseRandom) {
+                case 0:
+                    answerPhrase = `Я всегда угадываю\n\u{1F60E}`
+                    break;
+
+                case 1:
+                    answerPhrase = `Это было просто. Давай еще раз?\n\u{1F609}`
+                    break;
+
+                case 2:
+                    answerPhrase =  `Я молодец \n\u{1F60A}`
+                    break;
+
+            }
+            answerField.innerText = answerPhrase;
+            gameRun = false;
+        }
+    })
+})
+
+document.getElementById('btnRetry').addEventListener('click', function () { 
+    document.querySelector('.question').classList.toggle('hidden'); 
+    document.querySelector('.value-range').classList.toggle('hidden'); 
+    document.querySelector('.no-gutters').classList.toggle('hidden'); 
+    document.querySelector('.valueRange').classList.toggle('hidden'); 
+    document.querySelector('.form-inline').classList.toggle('hidden');
+    document.querySelector('#btnLess').classList.toggle('hidden'); 
+    document.querySelector('#btnEqual').classList.toggle('hidden'); 
+    document.querySelector('#btnOver').classList.toggle('hidden'); 
+    document.querySelector('.btn-link').classList.toggle('hidden'); 
+    document.querySelector('#btnProceed').classList.toggle('hidden'); 
+    document.querySelector('#formInputMin').value = '';
+    document.querySelector('#formInputMax').value = '';
+    minValue = (minValue < -999) ? minValue = -999 : (minValue > 999) ? minValue = 999 : minValue;
+    maxValue = (maxValue > 999) ? maxValue = 999 : (maxValue < -999) ? maxValue = -999 : maxValue;
+    if (maxValue < minValue) {
+        [maxValue, minValue] = [minValue, maxValue];
     }
+    if (Number.isNaN(maxValue) || Number.isNaN(minValue)) {
+        minValue = 0;
+        maxValue = 100;
+    }
+    guessNumber.innerText = `Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`;
+
+    document.getElementById('btnProceed').addEventListener('click', function () { 
+        document.querySelector('.value-range').classList.add('hidden'); 
+        document.querySelector('.terms').classList.remove('hidden'); 
+        document.querySelector('.valueRange').classList.add('hidden'); 
+        document.querySelector('.form-inline').classList.add('hidden'); 
+        document.querySelector('.guessNumber').classList.remove('hidden'); 
+        document.querySelector('#btnProceed').classList.add('hidden'); 
+        document.querySelector('#btnPlay').classList.remove('hidden');
+    })
 })
 
 function numberAsText(number) {
